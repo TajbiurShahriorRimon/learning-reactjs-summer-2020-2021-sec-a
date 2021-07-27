@@ -1,30 +1,43 @@
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import app from '../App';
 import {users} from "../usersData";
 import {useState} from 'react';
+import User from "./User";
 
-const CreateUser = ({status})=>{
+const CreateUser = ({status, callback})=>{
     const {id:eid} = useParams();
 
-    /*function onTodoChange(value)
-    {
-        this.state({
-            name: ''
-        })
-        const handleNameChange = (e) => {
-            this.setState({
-                name: e.target.value
-            })
-        }
-    }*/
+    const [newUser, insertUser] = useState(users);
 
 
-    const [insertUser, addUserList] = useState(users);
+    const onKeyChange = (userElement)=>{
+        var u_name = userElement.target.name;
+        var userValue = userElement.target.value;
+
+        var userDetails = {...newUser, [u_name] : userValue};
+        insertUser(userDetails);
+    }
+
     const addUser = (e) => {
+        e.preventDefault();
+
         if(status == 'add'){
-            //alert(e.target.name);
-            alert("frg");
-            //insertUser.push(e.target.name, e.target.id, e.target.dept);
+            alert("added");
+            callback(newUser);
+
+            /*var userObj = setNewUser({
+                id: userElement.target.id.value,
+                name: userElement.target.name.value,
+                dept: userElement.target.dept.value,
+            })*/
+            /*var uId = userElement.target.id.value;
+            var uName = userElement.target.name.value;
+            var uDept = userElement.target.dept.value;*/
+
+            //addUserList([...insertUser, list]);
+
+            //var countUser = users.length;
+            //alert(e.target.id.value);
         }
     }
     return(
@@ -32,9 +45,9 @@ const CreateUser = ({status})=>{
             <br/>
             <h3>{status==='add'?'Create':'Edit'} User Page: {eid}</h3>
             <form onSubmit={addUser}>
-                Name: <input type='text' name='name' value="" /> <br/>
-                ID: <input type='text' name='id' value="" /><br/>
-                Dept: <input type='text' name='dept' value="" /><br/> {/*dpet*/}
+                Name: <input type='text' name='name' onChange={onKeyChange} /> <br/>
+                ID: <input type='text' name='id' onChange={onKeyChange} /><br/>
+                Dept: <input type='text' name='dept' onChange={onKeyChange} /><br/>
                 <input type='submit' value={status==='add'?'Create':'Update'}/>
             </form>
         </>
