@@ -6,19 +6,26 @@ import Navbar from './components/Navbar';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import React from 'react';
 import User from "./components/User";
+import UpdateUser from "./components/UpdateUser";
 
 function App() {
 
     const [userlist, setUserList] = useState(users);
     const deleteuser = (id)=>{
-    const list = userlist.filter((user)=>user.id !== id);
-    setUserList(list);
+        const list = userlist.filter((user)=>user.id !== id);
+        setUserList(list);
     }
 
     const insertNewUser= (newUser)=>{
         //inserting new user into the array...
         setUserList([...userlist, newUser]);
     }
+
+    /*const updateUser = (userForUpdate, ind) => {
+        userlist[ind].id = userForUpdate.id;
+        userlist[ind].name = userForUpdate.name;
+        userlist[ind].dept = userForUpdate.dept;
+    }*/
 
     return (
 
@@ -38,7 +45,7 @@ function App() {
                       <CreateUser status='add' callback={insertNewUser} />
                   </div>
                 </Route>
-                <Route path='/edit/:id' children={<CreateUser status='edit' />}></Route>
+                <Route path='/edit/:id' children={<UpdateUser status='edit'  />}></Route>
                 <Route path='*'>
                   404 not found
                 </Route>
